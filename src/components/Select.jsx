@@ -54,10 +54,15 @@ const Select = forwardRef(({
         target: {
           value: option.value,
           name: props.name
+        },
+        currentTarget: {
+          value: option.value,
+          name: props.name
         }
       }
       onChange(syntheticEvent)
     }
+    setSelectedLabel(option.label)
     setIsOpen(false)
     setSearchTerm('')
   }
@@ -69,10 +74,15 @@ const Select = forwardRef(({
         target: {
           value: '',
           name: props.name
+        },
+        currentTarget: {
+          value: '',
+          name: props.name
         }
       }
       onChange(syntheticEvent)
     }
+    setSelectedLabel('')
     setSearchTerm('')
   }
 

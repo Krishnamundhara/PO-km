@@ -17,6 +17,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     reset
   } = useForm({
@@ -86,6 +87,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
           required
           options={customers.map(c => ({ value: c.name, label: c.name }))}
           placeholder="Select customer"
+          value={watch('party_name')}
           {...register('party_name')}
           error={errors.party_name?.message}
         />
@@ -102,6 +104,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
             required
             options={mills.map(m => ({ value: m.name, label: m.name }))}
             placeholder="Select mill"
+            value={watch('mill')}
             {...register('mill')}
             error={errors.mill?.message}
           />
@@ -111,6 +114,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
             required
             options={products.map(p => ({ value: p.name, label: p.name }))}
             placeholder="Select product"
+            value={watch('product')}
             {...register('product')}
             error={errors.product?.message}
           />
@@ -139,6 +143,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
               { value: 'Kg', label: 'Kg' },
               { value: 'Meters', label: 'Meters' }
             ]}
+            value={watch('weight_unit')}
             {...register('weight_unit')}
             error={errors.weight_unit?.message}
           />
@@ -158,6 +163,7 @@ export default function EditPOModal({ isOpen, onClose, order, onSave }) {
               { value: 'Bags', label: 'Bags' },
               { value: 'Taka', label: 'Taka' }
             ]}
+            value={watch('quantity_unit')}
             {...register('quantity_unit')}
             error={errors.quantity_unit?.message}
           />
