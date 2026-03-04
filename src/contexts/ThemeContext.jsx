@@ -4,10 +4,6 @@ const ThemeContext = createContext({})
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) return savedTheme
-    
     // Check system preference
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark'
@@ -23,8 +19,6 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove('dark')
     }
-    
-    localStorage.setItem('theme', theme)
   }, [theme])
 
   // Listen for system theme changes
@@ -32,11 +26,7 @@ export function ThemeProvider({ children }) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     
     const handleChange = (e) => {
-      const savedTheme = localStorage.getItem('theme')
-      // Only auto-switch if user hasn't set a preference
-      if (!savedTheme) {
-        setTheme(e.matches ? 'dark' : 'light')
-      }
+      setTheme(e.matches ? 'dark' : 'light')
     }
 
     mediaQuery.addEventListener('change', handleChange)

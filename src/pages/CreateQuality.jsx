@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useData } from '../contexts/DataContext'
 import { qualityRecordSchema } from '../lib/validation'
-import { getDraft, saveDraft, clearDraft } from '../lib/offline'
 import { downloadQualityPDF, shareQualityPDF } from '../services/pdfService'
 import { FlowButton } from '../components/ui/FlowButton'
 import Input from '../components/Input'
@@ -37,19 +36,6 @@ export default function CreateQuality() {
     }
   })
 
-  // Load draft on mount
-  useEffect(() => {
-    const loadDraft = async () => {
-      const draft = await getDraft('create_quality')
-      if (draft?.data) {
-        Object.keys(draft.data).forEach(key => {
-          setValue(key, draft.data[key])
-        })
-      }
-    }
-    loadDraft()
-  }, [setValue])
-
   // Auto-generate SR No
   useEffect(() => {
     if (qualityRecords.length > 0) {
@@ -65,15 +51,6 @@ export default function CreateQuality() {
     }
   }, [qualityRecords, setValue])
 
-  // Auto-save draft
-  const formValues = watch()
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      saveDraft('create_quality', formValues)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [formValues])
-
   const onSubmit = async (data) => {
     // Check for duplicate SR No
     const isDuplicate = qualityRecords.some(q => q.sr_no === data.sr_no)
@@ -86,7 +63,6 @@ export default function CreateQuality() {
     setLoading(true)
     try {
       await addQualityRecord(data)
-      await clearDraft('create_quality')
       toast.success('Quality record saved successfully')
       navigate('/quality-records')
     } catch (error) {

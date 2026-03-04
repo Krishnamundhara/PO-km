@@ -21,9 +21,27 @@ export default function GradientButton({
   ...props
 }) {
   const sizes = {
-    sm: "p-2 rounded-xl",
+    sm: "p-1 rounded-lg",
     md: "p-3 rounded-2xl",
     lg: "p-4 rounded-3xl",
+  };
+
+  const iconSizes = {
+    sm: "w-4 h-4",
+    md: "w-5 h-5",
+    lg: "w-6 h-6",
+  };
+
+  const iconPadding = {
+    sm: "p-1",
+    md: "p-1.5",
+    lg: "p-2",
+  };
+
+  const gapSizes = {
+    sm: "gap-1",
+    md: "gap-2",
+    lg: "gap-3",
   };
 
   return (
@@ -32,7 +50,7 @@ export default function GradientButton({
       className={`group relative overflow-hidden border-2 cursor-pointer transition-all duration-500 ease-out 
                   shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-95
                   ${sizes[size]} 
-                  border-indigo-400/60 bg-gradient-to-br ${gradientLight.from} ${gradientLight.via} ${gradientLight.to} 
+                  border-indigo-500/60 bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700
                   dark:border-indigo-400/30 dark:from-indigo-800/30 dark:via-black/50 dark:to-black/70
                   ${props.className || ''}`}
     >
@@ -43,22 +61,22 @@ export default function GradientButton({
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-400/20 via-indigo-300/10 to-indigo-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
       {/* Content */}
-      <div className="relative z-10 flex items-center gap-2">
+      <div className={`relative z-10 flex items-center ${gapSizes[size]}`}>
         {/* Icon */}
-        <div className="p-1.5 rounded-lg bg-gradient-to-br from-indigo-500/50 to-indigo-400/30 backdrop-blur-sm group-hover:from-indigo-400/60 group-hover:to-indigo-500/40 transition-all duration-300">
+        <div className={`${iconPadding[size]} rounded-lg bg-gradient-to-br from-indigo-400/50 to-indigo-500/40 dark:from-indigo-500/50 dark:to-indigo-400/30 backdrop-blur-sm group-hover:from-indigo-400/60 group-hover:to-indigo-500/50 transition-all duration-300`}>
           {React.cloneElement(icon, {
             className:
-              "w-5 h-5 text-white group-hover:text-white/90 transition-all duration-300 group-hover:scale-110 drop-shadow-lg",
+              `${iconSizes[size]} text-white group-hover:text-white/90 transition-all duration-300 group-hover:scale-110 drop-shadow-lg`,
           })}
         </div>
 
         {/* Texts */}
         <div className="flex-1 text-left">
-          <p className="text-white font-bold text-sm group-hover:text-white/90 transition-colors duration-300 drop-shadow-sm">
+          <p className={`text-white font-bold ${size === 'sm' ? 'text-xs' : 'text-sm'} group-hover:text-white/90 transition-colors duration-300 drop-shadow-sm`}>
             {title}
           </p>
           {subtitle && (
-            <p className="text-white/70 text-xs group-hover:text-white/90 transition-colors duration-300">
+            <p className="text-white/80 dark:text-white/70 text-xs group-hover:text-white/90 transition-colors duration-300">
               {subtitle}
             </p>
           )}
@@ -70,7 +88,7 @@ export default function GradientButton({
             viewBox="0 0 24 24"
             stroke="currentColor"
             fill="none"
-            className="w-4 h-4 text-white"
+            className={`${size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} text-white`}
           >
             <path
               d="M9 5l7 7-7 7"

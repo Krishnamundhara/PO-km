@@ -120,9 +120,9 @@ export default function OrderHistory() {
                     color="info"
                   />
                   <FlowButton
-                    onClick={() => editOrder(order)}
-                    text="Edit"
-                    color="warning"
+                    onClick={() => handleShare(order)}
+                    text="Share"
+                    color="info"
                   />
                   <FlowButton
                     onClick={() => handleDownload(order)}
@@ -202,15 +202,21 @@ export default function OrderHistory() {
           <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-4 sm:mt-6">
             <FlowButton
               fullWidth
-              onClick={() => handleDownload(selectedOrder)}
-              text="Download"
-              color="info"
+              onClick={() => {
+                setIsModalOpen(false)
+                editOrder(selectedOrder)
+              }}
+              text="Edit"
+              color="warning"
             />
             <FlowButton
               fullWidth
-              onClick={() => handleShare(selectedOrder)}
-              text="Share"
-              color="info"
+              onClick={() => {
+                setIsModalOpen(false)
+                setDeleteConfirm(selectedOrder.id)
+              }}
+              text="Delete"
+              color="danger"
             />
           </div>
         </Modal>

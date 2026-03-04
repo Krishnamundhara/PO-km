@@ -3,7 +3,6 @@ import { Suspense, lazy } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { DataProvider } from './contexts/DataContext'
-import { OfflineProvider } from './contexts/OfflineContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -29,9 +28,8 @@ function App() {
       <ThemeProvider>
         <Toaster position="top-center" reverseOrder={false} />
         <AuthProvider>
-          <OfflineProvider>
-            <DataProvider>
-              <Routes>
+          <DataProvider>
+            <Routes>
               <Route path="/login" element={<Login />} />
               <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                 <Route path="/" element={
@@ -93,9 +91,8 @@ function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </DataProvider>
-        </OfflineProvider>
-      </AuthProvider>
-    </ThemeProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

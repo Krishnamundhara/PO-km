@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 import { useData } from '../contexts/DataContext'
 import { purchaseOrderSchema, customerSchema, millSchema, productSchema } from '../lib/validation'
 import { generatePONumber } from '../lib/utils'
-import { getDraft, saveDraft, clearDraft } from '../lib/offline'
 import { downloadPDF, sharePDF } from '../services/pdfService'
 import { FlowButton } from '../components/ui/FlowButton'
 import Input from '../components/Input'
@@ -57,19 +56,6 @@ export default function CreatePO() {
     resolver: zodResolver(productSchema)
   })
 
-  // Load draft on mount
-  useEffect(() => {
-    const loadDraft = async () => {
-      const draft = await getDraft('create_po')
-      if (draft?.data) {
-        Object.keys(draft.data).forEach(key => {
-          setValue(key, draft.data[key])
-        })
-      }
-    }
-    loadDraft()
-  }, [setValue])
-
   // Generate PO Number - Use highest number + 1
   useEffect(() => {
     if (purchaseOrders.length > 0) {
@@ -85,15 +71,6 @@ export default function CreatePO() {
       setValue('po_number', '1')
     }
   }, [purchaseOrders, setValue])
-
-  // Auto-save draft
-  const formValues = watch()
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      saveDraft('create_po', formValues)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [formValues])
 
   const onSubmit = async (data) => {
     // Check for duplicate PO number
@@ -112,7 +89,6 @@ export default function CreatePO() {
     setLoading(true)
     try {
       await addPurchaseOrder(formData)
-      await clearDraft('create_po')
       toast.success('Purchase order created successfully')
       navigate('/history')
     } catch (error) {
